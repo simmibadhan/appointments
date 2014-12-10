@@ -10,6 +10,9 @@ class DoctorsController < ApplicationController
   # GET /doctors/1
   # GET /doctors/1.json
   def show
+    if @doctor.schedule.present?
+      @schedule = @doctor.schedule.ice_cube_schedule
+    end
   end
 
   # GET /doctors/new
@@ -61,6 +64,17 @@ class DoctorsController < ApplicationController
     end
   end
 
+  def set_schedule
+  end
+
+  def book_appointment
+    debugger
+    t = Time.now
+    h = params[:h].present? ? params[:h] : 0
+    time = Time.utc(t.year, t.month, t.day, h, 0, 0)
+    app = Appointment.create(:doctor_id => params[:id], :patient_id => 1, :appointment_time => time)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_doctor
@@ -69,6 +83,6 @@ class DoctorsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def doctor_params
-      params[:doctor]
+      params.require(:doctor).permit(:name)
     end
 end

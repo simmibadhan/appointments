@@ -3,6 +3,6 @@ class Schedule < ActiveRecord::Base
 
 	def ice_cube_schedule
 		sch = self.schedule
-		IceCube::Schedule.from_yaml(sch) #, :start_date_override => Time.now)
+		IceCube::Schedule.from_yaml(sch)
 	end
 end

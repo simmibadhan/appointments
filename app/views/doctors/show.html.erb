@@ -1,4 +1,27 @@
 <p id="notice"><%= notice %></p>
 
+Name: <%=@doctor.name%>
+<br><br>
+<%if @schedule.present?%>
+	Schedule:
+	<br>
+	Today <b>v</b>
+	<br>
+	<tr>
+		<%t = Time.now%>
+		<%for i in 0..23%>
+			<%if @schedule.occurring_at?(Time.utc(t.year, t.month, t.day,  i, 0, 0))%>
+		  	<th><%=i%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+		  	<%if @doctor.available_at(Time.utc(t.year, t.month, t.day,  i, 0, 0))%>
+		  		<td><%=link_to "Book", book_appointment_doctor_path(@doctor.id) + "?h="+i.to_s, :method => :post%></td>
+		  	<%else%>
+		  		<td>Booked</td>
+		  	<%end%>
+		  	<br>
+		  <%end%>
+	  <%end%>
+	</tr>
+	<br><br><br><br>
+<%end%>
 <%= link_to 'Edit', edit_doctor_path(@doctor) %> |
 <%= link_to 'Back', doctors_path %>

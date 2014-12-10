@@ -9,4 +9,8 @@ class Doctor < ActiveRecord::Base
 		schedule.schedule = sch.to_yaml
 		schedule.save
 	end
+
+	def available_at(ts)
+		Appointment.find_by_doctor_id_and_appointment_time(self.id,ts).blank?
+	end
 end
